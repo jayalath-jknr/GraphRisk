@@ -4,7 +4,8 @@ import { useEffect, useState, useRef, useCallback } from 'react';
 import dynamic from 'next/dynamic';
 
 // Dynamically import ForceGraph to avoid SSR issues
-const ForceGraph2D = dynamic(() => import('react-force-graph-2d'), { ssr: false });
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const ForceGraph2D = dynamic(() => import('react-force-graph-2d'), { ssr: false }) as any;
 
 interface GraphNode {
     id: string;
@@ -40,7 +41,8 @@ export default function NetworkPage() {
     const [loading, setLoading] = useState(true);
     const [viewType, setViewType] = useState<'partners' | 'fraud' | 'full'>('fraud');
     const [selectedNode, setSelectedNode] = useState<GraphNode | null>(null);
-    const graphRef = useRef<{ zoomToFit: (ms?: number) => void } | null>(null);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const graphRef = useRef<any>(null);
 
     useEffect(() => {
         setLoading(true);
@@ -63,7 +65,8 @@ export default function NetworkPage() {
         }
     }, [data]);
 
-    const getNodeColor = useCallback((node: GraphNode) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const getNodeColor = useCallback((node: any) => {
         if (node.riskLevel === 'high') return '#ef4444';
         if (node.riskLevel === 'medium') return '#f59e0b';
         if (node.group === 'partner') {
@@ -72,14 +75,16 @@ export default function NetworkPage() {
         return '#64748b';
     }, []);
 
-    const getLinkColor = useCallback((link: GraphLink) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const getLinkColor = useCallback((link: any) => {
         if (link.type === 'fraud') return 'rgba(239, 68, 68, 0.8)';
         if (link.type === 'hierarchy') return 'rgba(99, 102, 241, 0.4)';
         return 'rgba(148, 163, 184, 0.2)';
     }, []);
 
-    const handleNodeClick = useCallback((node: GraphNode) => {
-        setSelectedNode(node);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const handleNodeClick = useCallback((node: any) => {
+        setSelectedNode(node as GraphNode);
     }, []);
 
     if (loading) {
@@ -128,17 +133,16 @@ export default function NetworkPage() {
                         graphData={{ nodes: data.nodes, links: data.edges }}
                         nodeColor={getNodeColor}
                         nodeRelSize={4}
-                        nodeVal={(node) => (node as GraphNode).size || 5}
-                        nodeLabel={(node) => {
-                            const n = node as GraphNode;
-                            return `${n.name} (${n.type})\nRisk: ${n.riskLevel}`;
+                        nodeVal={(node: any) => node.size || 5}
+                        nodeLabel={(node: any) => {
+                            return `${node.name} (${node.type})\nRisk: ${node.riskLevel}`;
                         }}
                         linkColor={getLinkColor}
-                        linkWidth={(link) => (link as GraphLink).strength || 1}
-                        linkDirectionalParticles={(link) => (link as GraphLink).type === 'fraud' ? 4 : 0}
+                        linkWidth={(link: any) => link.strength || 1}
+                        linkDirectionalParticles={(link: any) => link.type === 'fraud' ? 4 : 0}
                         linkDirectionalParticleSpeed={0.005}
                         linkDirectionalParticleColor={() => '#ef4444'}
-                        onNodeClick={(node) => handleNodeClick(node as GraphNode)}
+                        onNodeClick={(node: any) => handleNodeClick(node)}
                         backgroundColor="#0a0a0f"
                         width={typeof window !== 'undefined' ? window.innerWidth - 100 : 1200}
                         height={580}

@@ -1,0 +1,6 @@
+{
+    "buildCommand": "cd partner-fraud-detector && npm install && npm run build",
+    "outputDirectory": "partner-fraud-detector/.next",
+    "installCommand": "cd partner-fraud-detector && npm install",
+    "framework": "nextjs"
+}

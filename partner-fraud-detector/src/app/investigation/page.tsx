@@ -52,28 +52,53 @@ function InvestigationContent() {
     const [generatingHypothesis, setGeneratingHypothesis] = useState(false);
 
     useEffect(() => {
-        // Fetch investigation data
-        fetch('/api/dashboard')
+        // Demo fraud rings for when API data isn't available
+        const demoRings: Record<string, FraudRing> = {
+            'FR001': {
+                ring_id: 'FR001',
+                type: 'opposite_trading',
+                partners_involved: ['P001 - Alpha Trading Partners', 'P002 - Beta Affiliates Ltd'],
+                clients_involved: ['C001', 'C002', 'C003', 'C004', 'C005', 'C006', 'C007', 'C008'],
+                estimated_fraud_value: 125000,
+                detection_confidence: 0.92,
+                first_detected: '2024-01-15'
+            },
+            'FR002': {
+                ring_id: 'FR002',
+                type: 'mirror_trading',
+                partners_involved: ['P003 - Gamma Partners', 'P004 - Delta Group'],
+                clients_involved: ['C009', 'C010', 'C011', 'C012', 'C013'],
+                estimated_fraud_value: 87500,
+                detection_confidence: 0.85,
+                first_detected: '2024-02-01'
+            }
+        };
+
+        // Try to fetch from API first
+        fetch('/api/detect?type=rings')
             .then(res => res.json())
-            .then(result => {
-                if (result.success && ringId) {
-                    // Get ring and related data from the dashboard response
-                    const dashboardData = result.data;
-                    // Fetch full data for investigation
-                    return fetch(`/api/detect?type=rings`).then(r => r.json());
-                }
-                return null;
-            })
             .then(detectResult => {
-                if (detectResult?.success) {
+                if (detectResult?.success && ringId) {
                     const ring = detectResult.data.fraudRings?.find((r: FraudRing) => r.ring_id === ringId);
                     if (ring) {
                         setData({ ring, partners: [], clients: [] });
+                        setLoading(false);
+                        return;
                     }
+                }
+                // Fall back to demo data
+                if (ringId && demoRings[ringId]) {
+                    setData({ ring: demoRings[ringId], partners: [], clients: [] });
                 }
                 setLoading(false);
             })
-            .catch(() => setLoading(false));
+            .catch(() => {
+                // Use demo data on error
+                if (ringId && demoRings[ringId]) {
+                    setData({ ring: demoRings[ringId], partners: [], clients: [] });
+                }
+                setLoading(false);
+            });
     }, [ringId]);
 
     const generateHypothesis = async () => {
@@ -146,11 +171,19 @@ function InvestigationContent() {
                     <AlertTriangle size={48} style={{ color: 'var(--text-muted)', marginBottom: '1rem' }} />
                     <h3 style={{ marginBottom: '0.5rem' }}>No Investigation Selected</h3>
                     <p style={{ color: 'var(--text-secondary)', marginBottom: '1.5rem' }}>
-                        Select a fraud alert from the Detection page to start an investigation
+                        Select a fraud alert from the Detection page or try a demo case below
                     </p>
-                    <Link href="/detection" className="btn btn-primary">
-                        Go to Detection
-                    </Link>
+                    <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+                        <Link href="/detection" className="btn btn-primary">
+                            Go to Detection
+                        </Link>
+                        <Link href="/investigation?ring=FR001" className="btn btn-secondary">
+                            🔍 Demo: Opposite Trading
+                        </Link>
+                        <Link href="/investigation?ring=FR002" className="btn btn-secondary">
+                            🔍 Demo: Mirror Trading
+                        </Link>
+                    </div>
                 </div>
             </>
         );

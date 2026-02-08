@@ -75,11 +75,15 @@ GraphRisk is an enterprise-grade fraud detection system that uses **Graph Neural
 
 ## 🎬 Demo
 
-<!-- Add your demo screenshots or GIFs here -->
-<!-- ![Dashboard Screenshot](./docs/screenshots/dashboard.png) -->
-<!-- ![Network Visualization](./docs/screenshots/network.png) -->
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=xDpQ699mev0">
+    <img src="https://img.youtube.com/vi/xDpQ699mev0/maxresdefault.jpg" alt="GraphRisk Demo Video" width="700">
+  </a>
+  <br>
+  <em>▶️ Click to watch the demo video</em>
+</p>
 
-**Live Demo:** [graphrisk.vercel.app](https://graphrisk.vercel.app) *(if deployed)*
+🌐 **Live Demo:** [graph-risk.vercel.app](https://graph-risk.vercel.app)
 
 ### Demo Flow
 1. **Dashboard** → View alerts, suspicious partners, and total risk exposure

@@ -25,6 +25,20 @@
   <img src="https://img.shields.io/badge/Vercel-Deployed-000?style=flat-square&logo=vercel" alt="Vercel">
 </p>
 
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=xDpQ699mev0">
+    <img src="https://img.youtube.com/vi/xDpQ699mev0/maxresdefault.jpg" alt="GraphRisk Demo Video" width="700">
+  </a>
+  <br>
+  <em>▶️ Click to watch the demo video</em>
+</p>
+
+<p align="center">
+  🌐 <a href="https://graph-risk.vercel.app"><strong>Live Demo</strong></a> •
+  📺 <a href="https://www.youtube.com/watch?v=xDpQ699mev0"><strong>Watch Video</strong></a> •
+  📂 <a href="https://github.com/jayalath-jknr/GraphRisk"><strong>GitHub</strong></a>
+</p>
+
 ---
 
 ## 🎯 Overview
